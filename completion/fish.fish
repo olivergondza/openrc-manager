@@ -4,8 +4,13 @@ function __fish_complete_openrc_delegated_command
   set -l tokens (commandline -opc) (commandline -ct)
   set -e tokens[1] # Remove `openrc`
   set -e tokens[1] # Remove filename
-  echo $tokens > /tmp/log
-  __fish_complete_subcommand --commandline $tokens
+
+  if test -n "$tokens"
+    __fish_complete_subcommand --commandline $tokens
+    return 0
+  end
+
+  return 1
 end
 
 # First positional argument is the openrc filename
