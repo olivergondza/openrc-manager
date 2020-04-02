@@ -32,6 +32,14 @@ openrc.sh files, as downloaded from OpenStack, contain code to read password int
 
 Individual openrc.sh files can be modified not to read the password from standard input, but to pull them from a password manager instead. The advantage of this approach is the password is stored encrypted by the password manager and injected exclusively to the processes that need to consume it. The repeated invocation is also simplified since by default, the gpg key used by `pass` is cached in keyring for several minutes causing `openrc` not to ask for master password on subsequent invocations.
 
+Update your openrc.sh like this:
+```diff
+-echo "Please enter your OpenStack Password for project $OS_PROJECT_NAME as user $OS_USERNAME: "
+-read -sr OS_PASSWORD_INPUT
+-export OS_PASSWORD=$OS_PASSWORD_INPUT
++export OS_PASSWORD="$(pass show my.opensatck.service/username)"
+```
+
 ## Command completion
 
 openrc-manager provides command completion to lookup the configured openrc.sh files and the arguments of the wrapped command. Following shell are currently supported:
