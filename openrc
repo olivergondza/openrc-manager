@@ -3,10 +3,14 @@
 set -euo pipefail
 trap 's=$?; echo >&2 "$0: Error on line "$LINENO": $BASH_COMMAND"; exit $s' ERR
 
-OPENRC_DIR="$(realpath ~/.openrc/files)"
-
 if [ $# -le 1 ]; then
   echo >&2 "Usage: openrc <openrc-file> [<COMMAND>...]"
+  exit 1
+fi
+
+OPENRC_DIR="$(readlink -f ~/.openrc/files)"
+if [ ! -d "$OPENRC_DIR" ]; then
+  echo >&2 "$OPENRC_DIR does not exist. Create it and fill with your openrc.sh files."
   exit 1
 fi
 
